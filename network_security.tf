@@ -1,32 +1,28 @@
 locals {
-  ssh_sg_name          = "${var.project_id}-ssh-sg"
-  public_http_sg_name  = "${var.project_id}-public-http-sg"
-  private_http_sg_name = "${var.project_id}-private-http-sg"
-
   common_tags = {
     Project = var.project_id
   }
 }
 
 resource "aws_security_group" "ssh" {
-  name        = local.ssh_sg_name
+  name        = "${var.project_id}-ssh-sg"
   description = "Allow SSH and ICMP from allowed IP ranges"
   vpc_id      = var.vpc_id
-  tags        = merge(local.common_tags, { Name = local.ssh_sg_name })
+  tags        = merge(local.common_tags, { Name = "${var.project_id}-ssh-sg" })
 }
 
 resource "aws_security_group" "public_http" {
-  name        = local.public_http_sg_name
+  name        = "${var.project_id}-public-http-sg"
   description = "Allow HTTP and ICMP from allowed IP ranges"
   vpc_id      = var.vpc_id
-  tags        = merge(local.common_tags, { Name = local.public_http_sg_name })
+  tags        = merge(local.common_tags, { Name = "${var.project_id}-public-http-sg" })
 }
 
 resource "aws_security_group" "private_http" {
-  name        = local.private_http_sg_name
+  name        = "${var.project_id}-private-http-sg"
   description = "Allow 8080 and ICMP from the public HTTP SG only"
   vpc_id      = var.vpc_id
-  tags        = merge(local.common_tags, { Name = local.private_http_sg_name })
+  tags        = merge(local.common_tags, { Name = "${var.project_id}-private-http-sg" })
 }
 
 resource "aws_security_group_rule" "ssh_ingress_ssh" {
